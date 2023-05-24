@@ -1,0 +1,20 @@
+on: push
+
+env:
+  clientId: d99627ea-29b0-48e0-9f14-d33cede7397b
+  tenant: automationdave.onmicrosoft.com
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: 'Upload TrustFrameworkBase Policy'
+      uses: azure-ad-b2c/deploy-trustframework-policy@v3
+      with:
+        folder: "./Environments/Production"
+        files: "TrustFrameworkBase.xml,TrustFrameworkLocalization.xml,TrustFrameworkExtensions.xml,SignUpOrSignin.xml,PasswordReset.xml,ProfileEdit.xml"
+        tenant: ${{ env.tenant }}
+        clientId: ${{ env.clientId }}
+        clientSecret: ${{ secrets.CLIENT_SECRET }}
